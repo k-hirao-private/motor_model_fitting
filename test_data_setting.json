@@ -1,0 +1,25 @@
+{
+    "t": {
+        "start": 0,
+        "stop": 1,
+        "num": 31
+    },
+    "p": {
+        "start": 0.2,
+        "stop": 1,
+        "num": 3
+    },
+    "J": {
+        "value": 1,
+        "variance": 0.05
+    },
+    "B": {
+        "value": 1,
+        "variance": 0.05
+    },
+    "C": {
+        "value": 0.1,
+        "variance": 0.01
+    },
+    "num": 3
+}
