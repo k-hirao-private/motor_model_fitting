@@ -1,6 +1,7 @@
 import csv
 import glob
 import sys
+import traceback
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -34,21 +35,26 @@ def main():
 
     # ファイルオープン
     for file_path in all_filepass:
-        with open(file_path) as f:
-            data = np.array([[float(value) for value in row]
-                             for row in csv.reader(f)]).T
-            for i in range(3):
-                fitting_data[i].extend(data[i])  # すべての点を1つの配列にまとめる
-            ax.scatter(data[0], data[1], data[2], s=5)  # Plot登録
-
+        try:
+            with open(file_path) as f:
+                data = np.array([[float(value) for value in row]
+                                for row in csv.reader(f)]).T
+                for i in range(3):
+                    fitting_data[i].extend(data[i])  # すべての点を1つの配列にまとめる
+                ax.scatter(data[0], data[1], data[2], s=5)  # Plot登録
+        except Exception:
+            traceback.print_exc()
+            print(file_path, "でエラーが発生しました")
+            exit()
     '''
         Scipyのフィッティング関数。
         第一引数：関数
         第二引数：関数の引数（二つ以上はタプルで渡す）
         第三引数：実際の値。関数によって出た値をこれに近づける。
+        bounds=各パラメーターの下限上限
     '''
     popt, pcov = curve_fit(
-        motor_model, (fitting_data[0], fitting_data[1]), fitting_data[2])
+        motor_model, (fitting_data[0], fitting_data[1]), fitting_data[2], bounds=(0, np.inf))
     print("パラメーターは[J,B,C]=", popt)
 
     # 解曲面のPlot
